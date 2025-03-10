@@ -96,12 +96,6 @@
                 return;
             }
 
-            // 验证文件大小（示例：限制5MB）
-            const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-                showStatus(`文件大小超过限制（最大5MB）`);
-                return;
-            }
 
             const reader = new FileReader();
             reader.readAsBinaryString(file);
