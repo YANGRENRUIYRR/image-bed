@@ -3,6 +3,7 @@
     "author": "Yang Renrui <yangrenruiyrr@163.com>",
     "license": "MIT",
     "dependencies": {
+      "@octokit/rest": "^21.1.1",
       "@vercel/node": "^1.14.0",
       "node-fetch": "2",
       "node-html-parser": "^5.3.3"
