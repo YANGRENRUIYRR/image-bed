@@ -1,0 +1,12 @@
+{
+    "routes": [
+        {
+            "src": "/upload",
+            "dest": "/api/upload.ts"
+        },
+        {
+            "src": "/",
+            "dest": "/index.html"
+        }
+    ]
+}

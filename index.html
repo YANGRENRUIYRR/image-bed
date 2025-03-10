@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image to GitHub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 12px 20px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #status {
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload Image to GitHub</h1>
+        <label for="imageInput" class="custom-file-upload">
+            Select Image
+        </label>
+        <input type="file" id="imageInput">
+        <button onclick="uploadImage()">Upload</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function uploadImage() {
+            const input = document.getElementById('imageInput');
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsBinaryString(file);
+
+                reader.onload = async () => {
+                    const imageData = reader.result;
+                    const fileName = file.name;
+
+                    try {
+                        const response = await fetch('/upload/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imageData, fileName })
+                        });
+
+                        const data = await response.json();
+                        const statusDiv = document.getElementById('status');
+                        if (response.ok) {
+                            statusDiv.textContent = 'Image uploaded successfully!';
+                        } else {
+                            statusDiv.textContent = `Error: ${data.message || 'Unknown error'}`;
+                        }
+                    } catch (error) {
+                        const statusDiv = document.getElementById('status');
+                        statusDiv.textContent = `Error: ${error.message}`;
+                    }
+                };
+
+                reader.onerror = () => {
+                    const statusDiv = document.getElementById('status');
+                    statusDiv.textContent = `Error reading file: ${reader.error}`;
+                };
+            } else {
+                const statusDiv = document.getElementById('status');
+                statusDiv.textContent = 'Please select an image.';
+            }
+        }
+    </script>
+</body>
+
+</html>
