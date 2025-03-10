@@ -35,7 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const { data } = await octokit.repos.createOrUpdateFileContents({
             owner: GITHUB_USERNAME,
             repo: GITHUB_REPO,
-            path: `images/${fileName}`, // 假设图片存储在仓库的 images 文件夹下
+            path: `images/${base64Data}-${fileName}`, // 假设图片存储在仓库的 images 文件夹下
             message: `Upload image: ${fileName}`,
             content: base64Data,
         });
