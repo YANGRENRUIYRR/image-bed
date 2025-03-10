@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image to GitHub</title>
+    <title>上传图片到 GitHub</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,15 +69,14 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>Upload Image to GitHub</h1>
+        <h1>上传图片到 GitHub</h1>
         <label for="imageInput" class="custom-file-upload">
-            Select Image
+            选择图片
         </label>
         <input type="file" id="imageInput">
-        <button onclick="uploadImage()">Upload</button>
+        <button onclick="uploadImage()">上传</button>
         <div id="status"></div>
     </div>
 
@@ -87,46 +85,62 @@
             const input = document.getElementById('imageInput');
             const file = input.files[0];
 
-            if (file) {
-                const reader = new FileReader();
-                reader.readAsBinaryString(file);
-
-                reader.onload = async () => {
-                    const imageData = reader.result;
-                    const fileName = file.name;
-
-                    try {
-                        const response = await fetch('/upload/', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ imageData, fileName })
-                        });
-
-                        const data = await response.json();
-                        const statusDiv = document.getElementById('status');
-                        if (response.ok) {
-                            statusDiv.textContent = 'Image uploaded successfully!';
-                        } else {
-                            statusDiv.textContent = `Error: ${data.message || 'Unknown error'}`;
-                        }
-                    } catch (error) {
-                        const statusDiv = document.getElementById('status');
-                        statusDiv.textContent = `Error: ${error.message}`;
-                    }
-                };
-
-                reader.onerror = () => {
-                    const statusDiv = document.getElementById('status');
-                    statusDiv.textContent = `Error reading file: ${reader.error}`;
-                };
-            } else {
-                const statusDiv = document.getElementById('status');
-                statusDiv.textContent = 'Please select an image.';
+            if (!file) {
+                showStatus('请选择一张图片');
+                return;
             }
+
+            // 验证文件类型
+            if (!file.type.startsWith('image/')) {
+                showStatus('请选择有效的图片文件（JPG/PNG/GIF等）');
+                return;
+            }
+
+            // 验证文件大小（示例：限制5MB）
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                showStatus(`文件大小超过限制（最大5MB）`);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.readAsBinaryString(file);
+
+            reader.onload = async () => {
+                const imageData = reader.result;
+                const fileName = file.name;
+
+                try {
+                    const response = await fetch('/upload/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imageData, fileName })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        showStatus('图片上传成功！');
+                    } else {
+                        showStatus(`上传失败：${data.message || '未知错误'}`);
+                    }
+                } catch (error) {
+                    showStatus(`网络错误：${error.message}`);
+                }
+            };
+
+            reader.onerror = () => {
+                showStatus(`读取文件失败：${reader.error}`);
+            };
+        }
+
+        function showStatus(message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            // 添加短暂的颜色反馈（可选）
+            statusDiv.style.color = message.includes('成功') ? '#28a745' : '#dc3545';
         }
     </script>
 </body>
-
 </html>
