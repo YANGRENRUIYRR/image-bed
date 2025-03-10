@@ -30,12 +30,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         // 将图片数据转换为 Base64 编码
         const base64Data = Buffer.from(imageData, 'binary').toString('base64');
-
+        const time = Date.now();
         // 上传图片到 GitHub 仓库
         const { data } = await octokit.repos.createOrUpdateFileContents({
             owner: GITHUB_USERNAME,
             repo: GITHUB_REPO,
-            path: `images/${base64Data}-${fileName}`, // 假设图片存储在仓库的 images 文件夹下
+            path: `images/${time}-${fileName}`, // 假设图片存储在仓库的 images 文件夹下
             message: `Upload image: ${fileName}`,
             content: base64Data,
         });
