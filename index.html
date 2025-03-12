@@ -66,11 +66,11 @@
                     showStatus('图片上传成功！');
                   showURL(data.url);
                 } else {
-                    showStatus(`上传失败：${data.message || '未知错误'}`);
+                    showStatus(`Error：${data.message || '未知错误'}`);
                   showURL('');
                 }
             } catch (error) {
-                showStatus(`网络错误：${error.message}`);
+                showStatus(`Error：${error.message}`);
               showURL('');
             }
         };
