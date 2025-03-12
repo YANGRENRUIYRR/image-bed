@@ -64,7 +64,6 @@
                 const data = await response.json();
                 if (response.ok) {
                     showStatus('图片上传成功！');
-                  let data=await response.json();
                   showURL(data.url);
                 } else {
                     showStatus(`上传失败：${data.message || '未知错误'}`);
