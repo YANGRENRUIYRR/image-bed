@@ -40,9 +40,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             content: base64Data,
         });
 
+        // 提取上传文件的 URL
+        const url = data.content?.html_url;
+
         return res.status(200).json({
             success: true,
             data,
+            url,
         });
     } catch (error) {
         console.error('Error uploading image to GitHub:', error);
