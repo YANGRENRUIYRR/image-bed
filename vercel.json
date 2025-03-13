@@ -1,15 +1,9 @@
 {
-    "routes": [
-        {
-            "src": "/upload/",
-            "dest": "/api/upload.ts"
-        },
-        {
-            "src": "/",
-            "dest": "/index.html"
-        }
-    ],
     "rewrites": [
+        {
+            "source": "/upload/",
+            "destination": "/api/upload.ts"
+        },
         {
             "source": "/images/(.*)",
             "destination": "https://github.com/YANGRENRUIYRR/image-bed-temp/blob/main/images/$1?raw=true"
