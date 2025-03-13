@@ -41,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
 
         // 提取上传文件的 URL
-        const url = data.content?.html_url;
+        const url = `/images/${time}-${fileName}`;
 
         return res.status(200).json({
             success: true,
