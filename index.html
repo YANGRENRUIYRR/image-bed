@@ -72,7 +72,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     showStatus('图片上传成功！');
-                  showURL(data.url);
+                  showURL(window.location.protocol+'//'+window.location.host+data.url);
                 } else {
                     showStatus(`Error：${data.message || '未知错误'}`);
                   showURL('');
