@@ -8,11 +8,11 @@
             "src": "/",
             "dest": "/index.html"
         }
-    ]
+    ],
     "rewrites": [
         {
             "source": "/images/(.*)",
             "destination": "https://github.com/YANGRENRUIYRR/image-bed-temp/blob/main/images/$1?raw=true"
         }
-  ]
+    ]
 }
