@@ -51,12 +51,11 @@
             showStatus('请选择有效的图片或视频文件');
             return;
         }
-        document.getElementById("waitting").style.display='none';
-        document.getElementById("uploading").style.display='';
         const reader = new FileReader();
         reader.readAsBinaryString(file);
-
         reader.onload = async () => {
+          document.getElementById("waitting").style.display='none';
+        document.getElementById("uploading").style.display='';
             const imageData = reader.result;
             const fileName = file.name;
 
@@ -71,23 +70,30 @@
 
                 const data = await response.json();
                 if (response.ok) {
+                  document.getElementById("waitting").style.display='';
+        document.getElementById("uploading").style.display='none';
                     showStatus('图片上传成功！');
                   showURL(window.location.protocol+'//'+window.location.host+data.url);
                 } else {
+                  document.getElementById("waitting").style.display='';
+        document.getElementById("uploading").style.display='none';
                     showStatus(`Error：${data.message || '未知错误'}`);
                   showURL('');
                 }
             } catch (error) {
+              document.getElementById("waitting").style.display='';
+        document.getElementById("uploading").style.display='none';
                 showStatus(`Error：${error.message}`);
               showURL('');
             }
         };
 
         reader.onerror = () => {
-            showStatus(`读取文件失败：${reader.error}`);
+            showStatus(`Error：${reader.error}`);
+            document.getElementById("waitting").style.display='';
+            document.getElementById("uploading").style.display='none';
         };
-        document.getElementById("waitting").style.display='';
-        document.getElementById("uploading").style.display='none';
+        // setTimeout(function(){document.getElementById("waitting").style.display='';document.getElementById("uploading").style.display='none';},3000);
     }
 
     function showStatus(message) {
