@@ -6,7 +6,7 @@
         },
         {
             "source": "/images/(.*)",
-            "destination": "https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/refs/heads/main/images/$1"
+            "destination": "https://github.com/YANGRENRUIYRR/image-bed-temp/blob/main/images/$1?raw=true"
         }
     ]
 }
