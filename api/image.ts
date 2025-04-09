@@ -17,7 +17,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         .then((data) => {
             response
                 .status(200)
-                .setHeader('Content-Type', 'image/svg+xml;charset=utf-8')
+                .setHeader('Content-Type', res.headers.get('Content-Type'))
                 .setHeader('Cache-Control', 'public, max-age=43200') // 43200s（12h） cache
                 .send(data);
         })
